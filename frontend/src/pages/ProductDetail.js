@@ -11,173 +11,258 @@ export default function ProductDetail({ cartItems, setCartItems }) {
 
   useEffect(() => {
 
-    fetch(process.env.REACT_APP_API_URL + "/product/" + id)
+    fetch(process.env.PUBLIC_URL + "/mockData.json")
       .then(res => res.json())
-      .then(res => setProduct(res.product));
+      .then(data => {
+
+        const selectedProduct = data.find(
+          product => String(product.id) === String(id)
+        );
+
+        setProduct(selectedProduct);
+
+      })
+      .catch(error => {
+        console.error("Product fetch error:", error);
+      });
 
   }, [id]);
 
+
   function increaseQty() {
-    if (qty < product.stock) {
+
+    if (product && qty < product.stock) {
       setQty(qty + 1);
     }
+
   }
 
+
   function decreaseQty() {
+
     if (qty > 1) {
       setQty(qty - 1);
     }
+
   }
+
 
   function addToCart() {
 
     const itemExists = cartItems.find(
-      (item) => item.product._id === product._id
+      item => item.product.id === product.id
     );
 
     if (!itemExists) {
-      const newItem = {product,qty};
-      setCartItems((state) => [...state, newItem]);
+
+      const newItem = {
+        product,
+        qty
+      };
+
+      setCartItems(state => [...state, newItem]);
 
     } else {
 
-      setCartItems((state) =>
-        state.map((item) =>
-          item.product._id === product._id
-            ? { ...item, qty: item.qty + qty }
-            : item 
+      setCartItems(state =>
+        state.map(item =>
+          item.product.id === product.id
+            ? {
+                ...item,
+                qty: item.qty + qty
+              }
+            : item
         )
       );
 
     }
+
   }
 
+
+  if (!product) {
+    return (
+      <h2 className="text-center mt-5">
+        Loading...
+      </h2>
+    );
+  }
+
+
   return (
-    product && (
-      <div className="container container-fluid">
 
-        <div className="row d-flex justify-content-around">
+    <div className="container product-detail-container">
 
-          <div
-            className="col-12 col-lg-5 img-fluid"
-            id="product_image"
-          >
-            <img
-              src={product.images?.[0]?.image}
-              alt={product.name}
-              height="500"
-              width="500"
-            />
+      <div className="row align-items-center justify-content-center">
+
+        {/* PRODUCT IMAGE */}
+
+        <div
+          className="col-12 col-md-6 col-lg-5 text-center"
+          id="product_image"
+        >
+
+          <img
+            className="img-fluid product-detail-image"
+            src={
+              process.env.PUBLIC_URL +
+              product.images?.[0]?.image
+            }
+            alt={product.name}
+          />
+
+        </div>
+
+
+        {/* PRODUCT DETAILS */}
+
+        <div className="col-12 col-md-6 col-lg-5 product-detail-info">
+
+          <h3 className="product-detail-title">
+            {product.name}
+          </h3>
+
+
+          <p id="product_id">
+            Product # {product.id}
+          </p>
+
+
+          <hr />
+
+
+          {/* Rating */}
+
+          <div className="rating-outer">
+
+            <div
+              className="rating-inner"
+              style={{
+                width: `${((product.rating || 0) / 5) * 100}%`
+              }}
+            ></div>
+
           </div>
 
-          <div className="col-12 col-lg-5 mt-5">
 
-            <h3>
-              {product.name}
-            </h3>
+          <hr />
 
-            <p id="product_id">
-              Product # {product._id}
-            </p>
 
-            <hr />
+          {/* Price */}
 
-            <div className="rating-outer">
-              <div
-                className="rating-inner"
-                style={{
-                  width: `${product.rating / 5 * 100}%`
-                }}
-              ></div>
-            </div>
+          <p id="product_price">
+            ₹{product.price}
+          </p>
 
-            <hr />
 
-            <p id="product_price">
-              ${product.price}
-            </p>
+          {/* Quantity + Cart */}
 
-            <div className="stockCounter d-inline">
+          <div className="product-actions">
 
-              <span
+            <div className="stockCounter">
+
+              <button
+                type="button"
                 className="btn btn-danger minus"
                 onClick={decreaseQty}
+                disabled={qty === 1}
               >
                 -
-              </span>
+              </button>
+
 
               <input
                 type="number"
-                className="form-control count d-inline"
+                className="form-control count"
                 value={qty}
                 readOnly
               />
 
-              <span
+
+              <button
+                type="button"
                 className="btn btn-primary plus"
                 onClick={increaseQty}
+                disabled={product.stock === 0 || qty >= product.stock}
               >
                 +
-              </span>
+              </button>
 
             </div>
+
 
             <button
               type="button"
               onClick={addToCart}
               id="cart_btn"
-              className="mx-3 btn btn-primary d-inline ml-4"
-              disabled={product.stock == 0}
+              className="btn btn-primary add-cart-btn"
+              disabled={product.stock === 0}
             >
               Add to Cart
             </button>
 
-            <hr />
-
-            <p>
-              Status:{" "}
-
-              <span
-                id="stock_status"
-                className={
-                  product.stock > 0
-                    ? "text-success"
-                    : "text-danger"
-                }
-              >
-                {product.stock > 0
-                  ? "In Stock"
-                  : "Out of Stock"}
-              </span>
-            </p>
-
-            <hr />
-
-            <h4 className="mt-2">
-              Description:
-            </h4>
-
-            <p>
-              {product.description}
-            </p>
-
-            <hr />
-
-            <p
-              id="product_seller"
-              className="mb-3"
-            >
-              Sold by: <strong>{product.seller}</strong>
-            </p>
-
-            <div className="rating w-50"></div>
-
           </div>
+
+
+          <hr />
+
+
+          {/* Stock */}
+
+          <p>
+
+            Status:{" "}
+
+            <span
+              id="stock_status"
+              className={
+                product.stock > 0
+                  ? "text-success"
+                  : "text-danger"
+              }
+            >
+              {product.stock > 0
+                ? "In Stock"
+                : "Out of Stock"}
+            </span>
+
+          </p>
+
+
+          <hr />
+
+
+          {/* Description */}
+
+          <h4 className="mt-2">
+            Description:
+          </h4>
+
+
+          <p className="product-description">
+            {product.description}
+          </p>
+
+
+          <hr />
+
+
+          {/* Seller */}
+
+          <p
+            id="product_seller"
+            className="mb-3"
+          >
+            Sold by:{" "}
+            <strong>
+              {product.seller}
+            </strong>
+          </p>
 
         </div>
 
       </div>
-    )
+
+    </div>
   );
 }
-

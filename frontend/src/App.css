@@ -617,3 +617,88 @@ ul.CTAs a {
     font-size: 14px;
     color: #555;
 }
+/* ========================= CART RESPONSIVE ========================= */ 
+.responsive-cart-item { padding: 15px 5px; } 
+.cart-product-image { width: 115px; height: 90px; object-fit: contain; max-width: 100%; } 
+.cart-product-name { display: block; word-break: break-word; } 
+.cart-stock-counter { display: flex; align-items: center; justify-content: center; } 
+.cart-stock-counter .count { width: 55px; text-align: center; margin: 0 5px; }
+
+ /* ========================= MOBILE ========================= */ 
+ @media (max-width: 576px) { 
+  .responsive-cart-item { padding: 20px 10px; } 
+  .cart-product-image { width: 140px; height: 110px; } 
+  .cart-product-name { font-size: 16px; text-align: center; } 
+  
+  #card_item_price { font-size: 17px; font-weight: 600; margin-bottom: 0; } 
+  .cart-stock-counter { justify-content: center; } 
+  #delete_cart_item { margin-top: 5px; } }
+
+  /* =========================
+   CART RESPONSIVE
+========================= */
+
+.responsive-cart-item {
+    padding: 15px 5px;
+}
+
+.cart-product-image {
+    width: 115px;
+    height: 90px;
+    object-fit: contain;
+    max-width: 100%;
+}
+
+.cart-product-name {
+    display: block;
+    word-break: break-word;
+}
+
+.cart-stock-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-stock-counter .count {
+    width: 55px;
+    text-align: center;
+    margin: 0 5px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 576px) {
+
+    .responsive-cart-item {
+        padding: 20px 10px;
+    }
+
+    .cart-product-image {
+        width: 140px;
+        height: 110px;
+    }
+
+    .cart-product-name {
+        font-size: 16px;
+        text-align: center;
+    }
+
+    #card_item_price {
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+
+    .cart-stock-counter {
+        justify-content: center;
+    }
+
+    #delete_cart_item {
+        margin-top: 5px;
+    }
+
+}

@@ -7,11 +7,13 @@ export default function Cart({ cartItems, setCartItems }) {
     const [complete, setComplete] = useState(false);
     const [orderedItems, setOrderedItems] = useState([]);
 
+
+    // Increase quantity
     const increaseQty = (id) => {
 
         const updatedCart = cartItems.map((item) => {
 
-            if (item.product._id === id) {
+            if (item.product.id === id) {
 
                 return {
                     ...item,
@@ -27,11 +29,13 @@ export default function Cart({ cartItems, setCartItems }) {
         setCartItems(updatedCart);
     };
 
+
+    // Decrease quantity
     const decreaseQty = (id) => {
 
         const updatedCart = cartItems.map((item) => {
 
-            if (item.product._id === id && item.qty > 1) {
+            if (item.product.id === id && item.qty > 1) {
 
                 return {
                     ...item,
@@ -47,15 +51,19 @@ export default function Cart({ cartItems, setCartItems }) {
         setCartItems(updatedCart);
     };
 
+
+    // Remove item
     const removeCartItem = (id) => {
 
         const updatedCart = cartItems.filter(
-            (item) => item.product._id !== id
+            (item) => item.product.id !== id
         );
 
         setCartItems(updatedCart);
     };
 
+
+    // Place order
     const placeOrderHandler = () => {
 
         setOrderedItems(cartItems);
@@ -65,28 +73,39 @@ export default function Cart({ cartItems, setCartItems }) {
         setComplete(true);
     };
 
+
+    // Total items
     const totalItems = cartItems.reduce(
         (total, item) => total + item.qty,
         0
     );
 
+
+    // Subtotal
     const subtotal = cartItems.reduce(
         (total, item) =>
             total + Number(item.product.price) * item.qty,
         0
     );
 
+
+    // Ordered total
     const orderedTotal = orderedItems.reduce(
         (total, item) =>
             total + Number(item.product.price) * item.qty,
         0
     );
 
+
     return (
 
         <div className="container container-fluid">
 
             {complete ? (
+
+                /* =========================
+                   ORDER COMPLETE
+                ========================= */
 
                 <div className="mt-5">
 
@@ -108,26 +127,34 @@ export default function Cart({ cartItems, setCartItems }) {
                         Ordered Items
                     </h3>
 
+
                     {orderedItems.map((item) => (
 
-                        <Fragment key={item.product._id}>
+                        <Fragment key={item.product.id}>
 
                             <div className="cart-item mt-4">
 
                                 <div className="row align-items-center">
 
-                                    <div className="col-3">
+                                    {/* Image */}
+
+                                    <div className="col-12 col-sm-3 text-center">
 
                                         <img
-                                            src={item.product.images?.[0]?.image}
+                                            className="cart-product-image"
+                                            src={
+                                                process.env.PUBLIC_URL +
+                                                item.product.images?.[0]?.image
+                                            }
                                             alt={item.product.name}
-                                            height="90"
-                                            width="115"
                                         />
 
                                     </div>
 
-                                    <div className="col-3">
+
+                                    {/* Name */}
+
+                                    <div className="col-12 col-sm-3 text-center text-sm-left mt-3 mt-sm-0">
 
                                         <h5>
                                             {item.product.name}
@@ -135,11 +162,13 @@ export default function Cart({ cartItems, setCartItems }) {
 
                                     </div>
 
-                                    <div className="col-2">
+
+                                    {/* Price */}
+
+                                    <div className="col-12 col-sm-2 text-center mt-3 mt-sm-0">
 
                                         <p>
-                                            Price:
-                                            $
+                                            Price: ₹
                                             {Number(
                                                 item.product.price
                                             ).toFixed(2)}
@@ -147,20 +176,24 @@ export default function Cart({ cartItems, setCartItems }) {
 
                                     </div>
 
-                                    <div className="col-2">
+
+                                    {/* Quantity */}
+
+                                    <div className="col-12 col-sm-2 text-center mt-3 mt-sm-0">
 
                                         <p>
-                                            Quantity:
-                                            {item.qty}
+                                            Quantity: {item.qty}
                                         </p>
 
                                     </div>
 
-                                    <div className="col-2">
+
+                                    {/* Total */}
+
+                                    <div className="col-12 col-sm-2 text-center mt-3 mt-sm-0">
 
                                         <p>
-                                            Total:
-                                            $
+                                            Total: ₹
                                             {(
                                                 Number(
                                                     item.product.price
@@ -180,20 +213,25 @@ export default function Cart({ cartItems, setCartItems }) {
 
                     ))}
 
-                    <div className="text-end mt-4">
+
+                    <div className="text-center text-sm-right mt-4">
 
                         <h4>
-                            Total Items: {orderedItems.reduce(
-                                (total, item) => total + item.qty,
+                            Total Items:{" "}
+                            {orderedItems.reduce(
+                                (total, item) =>
+                                    total + item.qty,
                                 0
                             )}
                         </h4>
 
                         <h3>
-                            Order Total: ${orderedTotal.toFixed(2)}
+                            Order Total: ₹
+                            {orderedTotal.toFixed(2)}
                         </h3>
 
                     </div>
+
 
                     <div className="text-center mt-4">
 
@@ -210,19 +248,27 @@ export default function Cart({ cartItems, setCartItems }) {
 
             ) : (
 
+                /* =========================
+                   CART
+                ========================= */
+
                 <>
 
                     <h2 className="mt-5">
-                        Your Cart: <b>{totalItems} items</b>
+                        Your Cart:{" "}
+                        <b>{totalItems} items</b>
                     </h2>
 
+
                     <div className="row d-flex justify-content-between">
+
+                        {/* Cart Items */}
 
                         <div className="col-12 col-lg-8">
 
                             {cartItems.length === 0 ? (
 
-                                <h3 className="mt-5">
+                                <h3 className="mt-5 text-center">
                                     Your cart is Empty!
                                 </h3>
 
@@ -231,44 +277,56 @@ export default function Cart({ cartItems, setCartItems }) {
                                 cartItems.map((item) => (
 
                                     <Fragment
-                                        key={item.product._id}
+                                        key={item.product.id}
                                     >
 
                                         <hr />
 
-                                        <div className="cart-item">
 
-                                            <div className="row">
+                                        <div className="cart-item responsive-cart-item">
 
-                                                <div className="col-4 col-lg-3">
+                                            <div className="row align-items-center">
+
+                                                {/* Product Image */}
+
+                                                <div className="col-12 col-sm-3 text-center">
 
                                                     <img
-                                                        src={item.product.images?.[0]?.image}
+                                                        className="cart-product-image"
+                                                        src={
+                                                            process.env.PUBLIC_URL +
+                                                            item.product.images?.[0]?.image
+                                                        }
                                                         alt={item.product.name}
-                                                        height="90"
-                                                        width="115"
                                                     />
 
                                                 </div>
 
-                                                <div className="col-5 col-lg-3">
+
+                                                {/* Product Name */}
+
+                                                <div className="col-12 col-sm-3 text-center text-sm-left mt-3 mt-sm-0">
 
                                                     <Link
                                                         to={
                                                             "/product/" +
-                                                            item.product._id
+                                                            item.product.id
                                                         }
+                                                        className="cart-product-name"
                                                     >
                                                         {item.product.name}
                                                     </Link>
 
                                                 </div>
 
-                                                <div className="col-4 col-lg-2 mt-4 mt-lg-0">
+
+                                                {/* Price */}
+
+                                                <div className="col-12 col-sm-2 text-center mt-3 mt-sm-0">
 
                                                     <p id="card_item_price">
 
-                                                        $
+                                                        ₹
                                                         {Number(
                                                             item.product.price
                                                         ).toFixed(2)}
@@ -277,15 +335,18 @@ export default function Cart({ cartItems, setCartItems }) {
 
                                                 </div>
 
-                                                <div className="col-4 col-lg-3 mt-4 mt-lg-0">
 
-                                                    <div className="stockCounter d-inline">
+                                                {/* Quantity */}
+
+                                                <div className="col-12 col-sm-3 text-center mt-3 mt-sm-0">
+
+                                                    <div className="stockCounter cart-stock-counter">
 
                                                         <button
                                                             className="btn btn-danger minus"
                                                             onClick={() =>
                                                                 decreaseQty(
-                                                                    item.product._id
+                                                                    item.product.id
                                                                 )
                                                             }
                                                             disabled={
@@ -295,18 +356,20 @@ export default function Cart({ cartItems, setCartItems }) {
                                                             -
                                                         </button>
 
+
                                                         <input
                                                             type="number"
-                                                            className="form-control count d-inline"
+                                                            className="form-control count"
                                                             value={item.qty}
                                                             readOnly
                                                         />
+
 
                                                         <button
                                                             className="btn btn-primary plus"
                                                             onClick={() =>
                                                                 increaseQty(
-                                                                    item.product._id
+                                                                    item.product.id
                                                                 )
                                                             }
                                                         >
@@ -317,14 +380,17 @@ export default function Cart({ cartItems, setCartItems }) {
 
                                                 </div>
 
-                                                <div className="col-4 col-lg-1 mt-4 mt-lg-0">
+
+                                                {/* Delete */}
+
+                                                <div className="col-12 col-sm-1 text-center mt-3 mt-sm-0">
 
                                                     <button
                                                         id="delete_cart_item"
                                                         className="btn btn-danger"
                                                         onClick={() =>
                                                             removeCartItem(
-                                                                item.product._id
+                                                                item.product.id
                                                             )
                                                         }
                                                         title="Remove from cart"
@@ -346,6 +412,9 @@ export default function Cart({ cartItems, setCartItems }) {
 
                         </div>
 
+
+                        {/* Order Summary */}
+
                         <div className="col-12 col-lg-3 my-4">
 
                             <div id="order_summary">
@@ -356,23 +425,31 @@ export default function Cart({ cartItems, setCartItems }) {
 
                                 <hr />
 
+
                                 <p>
+
                                     Subtotal:
 
                                     <span className="order-summary-values">
                                         {totalItems} (Units)
                                     </span>
+
                                 </p>
 
+
                                 <p>
+
                                     Est. total:
 
                                     <span className="order-summary-values">
-                                        ${subtotal.toFixed(2)}
+                                        ₹{subtotal.toFixed(2)}
                                     </span>
+
                                 </p>
 
+
                                 <hr />
+
 
                                 <button
                                     id="checkout_btn"
@@ -380,9 +457,7 @@ export default function Cart({ cartItems, setCartItems }) {
                                     disabled={
                                         cartItems.length === 0
                                     }
-                                    onClick={
-                                        placeOrderHandler
-                                    }
+                                    onClick={placeOrderHandler}
                                 >
                                     Place Order
                                 </button>
@@ -398,6 +473,5 @@ export default function Cart({ cartItems, setCartItems }) {
             )}
 
         </div>
-
     );
 }

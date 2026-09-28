@@ -4,6 +4,7 @@
     "name": "Wireless Bluetooth Headphones",
     "price": 1499,
     "description": "High-quality wireless headphones with deep bass, noise reduction and long battery life.",
+    "rating":4.2,
     "images": [
         {
             "image": "/images/products/wireless_buds.jpg"
@@ -80,19 +81,7 @@
     "numofreviews": 312,
     "createdat": "2026-08-15"
   },
-  {
-    "id":107,
-    "name": "Laptop",
-    "price": 12000,
-    "description": "A powerful and stylish laptop desugned for everyday use, study, programming and professional work.",
-    "rating": 4.3,
-    "images":[{"name":"/images/products/7.jpg"}],
-    "category": "Gagets",
-    "seller": "Lenovo",
-    "stock": 73,
-    "numofreviews": 156,
-    "createdat": "2026-08-12"
-  },
+  
   {
     "id":108,
     "name": "Women's Handbag",
@@ -145,19 +134,7 @@
     "numofreviews": 109,
     "createdat": "2026-08-02"
   },
-  {
-    "id":112,
-    "name": "Ceramic Coffee Mug",
-    "price": 349,
-    "description": "Premium ceramic coffee mug with a simple and stylish design.",
-    "rating": 4.3,
-    "image": [{"image":"images/products/laptop.jpg"}],
-    "category": "Home & Kitchen",
-    "seller": "KitchenWorld",
-    "stock": 150,
-    "numofreviews": 76,
-    "createdat": "2026-07-29"
-  },
+  
   {
     "id":113,
     "name": "Laptop Stand",

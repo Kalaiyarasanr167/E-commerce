@@ -1,30 +1,41 @@
-import { Fragment, useEffect } from 'react'
-import ProductCard from '../components/ProductCard'
-import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Fragment, useEffect, useState } from 'react';
+import ProductCard from '../components/ProductCard';
 
-export default function Home(){
+export default function Home() {
 
-    const[products, setProducts]=useState([]);
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [products, setProducts] = useState([]);
 
-    useEffect(()=>{
-        fetch(process.env.REACT_APP_API_URL+'/products?'+searchParams)
-        .then(res=>res.json())
-        .then(res=>setProducts(res.products))
-    },[searchParams])
-    return <Fragment>
-  
+   useEffect(() => {
+    console.log("HOME COMPONENT LOADED");
 
-    <h1 id="products_heading">Latest Products</h1>
-    <section id="products" className="container mt-5">
-      <div className="row">
-        {products.map(product =><ProductCard key={product.id} product={product}/>)}
-            
-        </div>
+    fetch(process.env.PUBLIC_URL + '/mockData.json')
+        .then(response => {
+            console.log("FETCH RESPONSE:", response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log("PRODUCT DATA:", data);
+            setProducts(data);
+        })
+        .catch(error => {
+            console.error("FETCH ERROR:", error);
+        });
+}, []);
 
-    </section>
-      
-   
-    </Fragment>
+    return (
+        <Fragment>
+            <h1 id="products_heading">Latest Products</h1>
+
+            <section id="products" className="container mt-5">
+                <div className="row">
+                    {products.map(product => (
+                        <ProductCard
+                            key={product.id}
+                            product={product}
+                        />
+                    ))}
+                </div>
+            </section>
+        </Fragment>
+    );
 }

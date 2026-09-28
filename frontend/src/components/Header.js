@@ -5,34 +5,35 @@ import Search from "./Search";
 export default function Header({ cartItems }) {
 
   return (
-    <nav className="navbar row">
+    <nav className="navbar row align-items-center">
 
-      <div className="col-12 col-md-3">
-
+      {/* Logo */}
+      <div className="col-12 col-md-3 text-center text-md-left">
         <div className="navbar-brand">
-
           <Link to="/">
             <img
-              width="150px"
-              src="/images/logos.png"
+              className="img-fluid"
+              src={process.env.PUBLIC_URL + "/images/logos.png"}
               alt="Logo"
             />
           </Link>
-
         </div>
-
       </div>
 
-      <div className="col-12 col-md-6 mt-2 mt-md-0">
+
+      {/* Search */}
+      <div className="col-12 col-md-6 mt-3 mt-md-0">
         <Search />
       </div>
 
-      <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
+
+      {/* Cart */}
+      <div className="col-12 col-md-3 mt-3 mt-md-0 text-center">
 
         <Link
           to="/cart"
           id="cart"
-          className="ml-3"
+          className="ml-md-3"
         >
           Cart
         </Link>
@@ -49,4 +50,3 @@ export default function Header({ cartItems }) {
     </nav>
   );
 }
-
